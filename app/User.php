@@ -6,6 +6,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class User
+ * @package App
+ * @property $name
+ * @property $email
+ * @property $is_admin
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -16,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'is_admin'
     ];
 
     /**
@@ -36,4 +43,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return $this->is_admin === 1 ? true : false;
+    }
+
+    public static function getAdminEmails(){
+        /** @var User $admin */
+        $admins = self::query()->where('is_admin','=','1')->get();
+        $adminMails = [];
+        foreach ($admins as $admin) {
+            $adminMails[] = $admin->email;
+        }
+        return $adminMails;
+    }
 }

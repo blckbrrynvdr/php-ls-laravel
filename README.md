@@ -1,3 +1,13 @@
+# От автора этого чудища
+* Сидер категорий не смог реализовать чет с стартовыми данными, поэтому на фабрике тоже
+ php artisan db:seed --class=CategoriesSeeder
+* После создания категорий можно ~~выпускать кракена~~ запускать фабрику
+ **php artisan db:seed --class=Good**
+* Админами не рождаются, ими становятся на **форме регистрации**
+* Если пользователь админ, попасть в админку он может нажав на своё имя справа сверху под карзиной
+
+
+
 <p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
 
 <p align="center">
