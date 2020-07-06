@@ -15,6 +15,7 @@ class OrderController extends Controller
     {
         $userName = trim($_GET['name']);
         $userEmail = trim($_GET['email']);
+        $notifications_email = (User::getAdmin())->notifications_email ?? env('MAIL_USERNAME');
 
         if ($userName && $userEmail) {
             // если есть на кого сделать заказ, делаем
@@ -53,7 +54,7 @@ class OrderController extends Controller
                 // письмо админам
                 $adminNotification = (new Swift_Message('Новый заказ'))
                     ->setFrom([env('MAIL_USERNAME') => 'ГеймсМаркет'])
-                    ->setTo(User::getAdminEmails())
+                    ->setTo($notifications_email)
                     ->setBody($adminNotBody);
 
 

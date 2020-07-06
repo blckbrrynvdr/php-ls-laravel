@@ -5,18 +5,32 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Goods;
 use App\Order;
+use App\User;
 use Illuminate\Http\Request;
 
 
 
 class AdminController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     public function index()
     {
+        $notifications_email = (User::getAdmin())->notifications_email ?? env('MAIL_USERNAME');
         $goods = $goods = Goods::query()->orderBy('id','desc')->paginate(6);
         return view('admin.index', [
             'goods' => $goods,
             'categories' => Category::all(),
+            'notifications_email' => $notifications_email,
         ]);
     }
 
@@ -121,5 +135,13 @@ class AdminController extends Controller
     {
         Goods::getById($id)->delete();
         return redirect('/admin/goods/');
+    }
+
+    public function setNotificationsEmail(Request $request)
+    {
+        $admin = User::getAdmin();
+        $admin->notifications_email = $request->input('email');
+        $admin->save();
+        return redirect()->route('admin');
     }
 }

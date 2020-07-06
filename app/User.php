@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
  * @property $name
  * @property $email
  * @property $is_admin
+ * @property $notifications_email
  */
 class User extends Authenticatable
 {
@@ -23,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_admin'
+        'name', 'email', 'password', 'is_admin', 'notifications_email'
     ];
 
     /**
@@ -49,6 +50,12 @@ class User extends Authenticatable
         return $this->is_admin === 1 ? true : false;
     }
 
+    public static function getById($id)
+    {
+        return self::query()->where('id','=', $id)->first();
+    }
+
+    /* @deprecated */
     public static function getAdminEmails(){
         /** @var User $admin */
         $admins = self::query()->where('is_admin','=','1')->get();
@@ -57,5 +64,10 @@ class User extends Authenticatable
             $adminMails[] = $admin->email;
         }
         return $adminMails;
+    }
+
+    public static function getAdmin()
+    {
+        return self::query()->where('is_admin', '=', 1)->first();
     }
 }

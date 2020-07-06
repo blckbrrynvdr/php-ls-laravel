@@ -58,3 +58,6 @@ Route::get('/admin/good/edit/{id}','AdminController@editGood')->name('editGood')
     ->middleware(\App\Http\Middleware\Admin::class);
 Route::get('/admin/good/add/','AdminController@addGood')->name('addGood')
     ->middleware(\App\Http\Middleware\Admin::class);
+
+Route::post('/admin/set_notifications_email', 'AdminController@setNotificationsEmail')
+    ->name('setNotificationsEmail');
